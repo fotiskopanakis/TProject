@@ -102,4 +102,28 @@ public class RawCompress
 		}
 		catch (Exception e) {e.printStackTrace();} 
 	}
+	
+	public static void write2output(int runLength,FileOutputStream out,byte[] currbyte, int noOfBytes)
+	{
+		try 
+		{
+			if(runLength==1)
+			{
+				out.write(currbyte,0,noOfBytes);
+			}
+			else if(runLength>1)
+			{
+				char[] ch = String.valueOf(runLength-2).toCharArray();
+				byte[] number = new String(ch).getBytes();
+				
+				out.write(currbyte,0,noOfBytes);
+				out.write(currbyte,0,noOfBytes);
+				out.write(number,0,number.length);
+			}
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 }
