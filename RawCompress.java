@@ -65,5 +65,41 @@ public class RawCompress
 	
 	public static void decompress(File input,File output)
 	{
+		try 
+		{
+			FileOutputStream out = new FileOutputStream(output);
+			FileInputStream fin = new FileInputStream(input);
+			
+			byte[] curr = new byte[1];
+			byte[] prev = new byte[1];
+			
+			while( fin.read(curr) != -1 )
+            {
+				if(Arrays.equals(curr, prev))
+				{
+					prev=curr.clone();
+					if(fin.read(curr) != -1)
+					{
+						int times=Character.getNumericValue(curr[0]);
+						for(int i=0;i<times+1;i++)
+						{
+							out.write(prev); 
+						}
+					}
+					prev=new byte[1];
+					continue;
+				}
+				else
+				{
+					out.write(curr);
+					prev=curr.clone();
+					continue;
+				}
+            }
+			
+			fin.close();
+			out.close();
+		}
+		catch (Exception e) {e.printStackTrace();} 
 	}
 }
